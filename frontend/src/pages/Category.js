@@ -1,5 +1,5 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { products, categories } from '../data/mockData';
 import { useCart } from '../context/CartContext';
@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext';
 const Category = () => {
   const { categoryId } = useParams();
   const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const category = categories.find(c => c.id === categoryId);
   const categoryProducts = products.filter(p => p.category === categoryId);
@@ -45,7 +46,8 @@ const Category = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.05 }}
-              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group"
+              className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
+              onClick={() => navigate(`/product/${product.id}`)}
             >
               <div className="relative overflow-hidden">
                 <img
@@ -73,7 +75,10 @@ const Category = () => {
                   </span>
                 </div>
                 <button
-                  onClick={() => addToCart(product)}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart(product);
+                  }}
                   className="w-full bg-clay text-white py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 font-secondary font-semibold"
                 >
                   Add to Cart

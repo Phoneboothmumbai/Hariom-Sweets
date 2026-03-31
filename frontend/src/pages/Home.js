@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowRight, Star, Award, TrendingUp } from 'lucide-react';
 import { products, categories } from '../data/mockData';
@@ -7,6 +7,7 @@ import { useCart } from '../context/CartContext';
 
 const Home = () => {
   const { addToCart } = useCart();
+  const navigate = useNavigate();
   const popularProducts = products.slice(0, 4);
 
   return (
@@ -128,7 +129,8 @@ const Home = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
-                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group"
+                className="bg-white rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 group cursor-pointer"
+                onClick={() => navigate(`/product/${product.id}`)}
               >
                 <div className="relative overflow-hidden">
                   <img
@@ -150,7 +152,10 @@ const Home = () => {
                       ₹{product.price}
                     </span>
                     <button
-                      onClick={() => addToCart(product)}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        addToCart(product);
+                      }}
                       className="bg-clay text-white px-4 py-2 rounded-md hover:bg-opacity-90 transition-colors duration-200 font-secondary text-sm"
                     >
                       Add to Cart

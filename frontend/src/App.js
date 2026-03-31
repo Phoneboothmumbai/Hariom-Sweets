@@ -12,6 +12,7 @@ import Category from './pages/Category';
 import About from './pages/About';
 import Gifting from './pages/Gifting';
 import Checkout from './pages/Checkout';
+import ProductDetail from './pages/ProductDetail';
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/shop" element={<Shop />} />
+              <Route path="/product/:productId" element={<ProductDetail />} />
               <Route path="/categories/:categoryId" element={<Category />} />
               <Route path="/about" element={<About />} />
               <Route path="/gifting" element={<Gifting />} />
