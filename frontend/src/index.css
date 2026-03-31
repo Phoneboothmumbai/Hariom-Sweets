@@ -1,0 +1,158 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Lora:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Hariom Brand Colors */
+  --clay-red: #893026;
+  --sheesham-wood: #1f0f10;
+  --gold-foil: #D1B46D;
+  --pure-white: #FFFFFF;
+  
+  /* Secondary Pastel Colors */
+  --bg-cream: #fdf7e1;
+  --bg-peach: #f6e8e6;
+  --bg-mint: #a3caca;
+  --bg-soft-gold: #f8eed2;
+  
+  /* CSS Variables for shadcn */
+  --background: 0 0% 100%;
+  --foreground: 12 41% 12%;
+  --card: 0 0% 100%;
+  --card-foreground: 12 41% 12%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 12 41% 12%;
+  --primary: 9 51% 35%;
+  --primary-foreground: 0 0% 98%;
+  --secondary: 37 44% 61%;
+  --secondary-foreground: 12 41% 12%;
+  --muted: 42 100% 95%;
+  --muted-foreground: 12 10% 45%;
+  --accent: 42 100% 95%;
+  --accent-foreground: 12 41% 12%;
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 98%;
+  --border: 42 50% 90%;
+  --input: 42 50% 90%;
+  --ring: 9 51% 35%;
+  --radius: 0.5rem;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Lora', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: var(--sheesham-wood);
+  background-color: var(--pure-white);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-cream);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--clay-red);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sheesham-wood);
+}
+
+/* Utility Classes */
+.font-primary {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-secondary {
+  font-family: 'Lora', serif;
+}
+
+.text-clay {
+  color: var(--clay-red);
+}
+
+.text-wood {
+  color: var(--sheesham-wood);
+}
+
+.text-gold {
+  color: var(--gold-foil);
+}
+
+.bg-clay {
+  background-color: var(--clay-red);
+}
+
+.bg-wood {
+  background-color: var(--sheesham-wood);
+}
+
+.bg-gold {
+  background-color: var(--gold-foil);
+}
+
+.bg-cream {
+  background-color: var(--bg-cream);
+}
+
+.bg-peach {
+  background-color: var(--bg-peach);
+}
+
+/* Animation utilities */
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-in;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.transition-smooth {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
