@@ -54,12 +54,15 @@ const Home = () => {
             className="absolute inset-0 bg-cover bg-center"
             style={{ 
               backgroundImage: "url('https://images.unsplash.com/photo-1758910536889-43ce7b3199fd?w=1920&q=85')",
-              opacity: bannerOpacity
+              opacity: bannerOpacity,
+              filter: 'brightness(0.7)'
             }}
           />
-          {/* Gradient Overlay for text readability */}
-          <div className="absolute inset-0 bg-gradient-to-r from-wood/95 via-wood/75 to-wood/40"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-wood/60 via-transparent to-transparent"></div>
+          {/* Strong dark gradient overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-black/50"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+          {/* Additional blur effect on the edges */}
+          <div className="absolute inset-0 backdrop-blur-[2px]"></div>
         </motion.div>
         
         {/* Hero Text Content */}
@@ -73,6 +76,7 @@ const Home = () => {
           <div className="max-w-3xl">
             <motion.p 
               className="text-gold font-secondary text-xl md:text-2xl mb-4 italic"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
@@ -81,6 +85,7 @@ const Home = () => {
             </motion.p>
             <motion.h1 
               className="text-5xl md:text-7xl lg:text-8xl font-primary font-bold text-white mb-6 leading-tight"
+              style={{ textShadow: '0 4px 20px rgba(0,0,0,0.9)' }}
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.5, duration: 0.8 }}
@@ -91,6 +96,7 @@ const Home = () => {
             </motion.h1>
             <motion.p 
               className="text-xl md:text-2xl font-secondary text-white/90 mb-8 max-w-2xl leading-relaxed"
+              style={{ textShadow: '0 2px 10px rgba(0,0,0,0.8)' }}
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.7, duration: 0.8 }}
