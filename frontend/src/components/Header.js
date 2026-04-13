@@ -12,28 +12,34 @@ const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
+      // Change header style after scrolling 100px (when leaving hero banner)
+      setIsScrolled(window.scrollY > 100);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Dynamic colors based on scroll position
+  const textColor = isScrolled ? 'text-wood' : 'text-white';
+  const hoverColor = isScrolled ? 'hover:text-clay' : 'hover:text-gold';
+  const logoColor = isScrolled ? 'text-clay' : 'text-white';
+  const goldAccent = isScrolled ? 'text-gold' : 'text-gold';
+  const bgColor = isScrolled ? 'bg-white/95' : 'bg-black/20';
+
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-white/95 backdrop-blur-md shadow-md'
-          : 'bg-transparent'
-        }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${bgColor} ${
+        isScrolled ? 'backdrop-blur-md shadow-md' : 'backdrop-blur-sm'
+      }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-20">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="text-2xl md:text-3xl font-primary font-bold text-clay tracking-wide">
+            <div className={`text-2xl md:text-3xl font-primary font-bold ${logoColor} tracking-wide transition-colors duration-500`}>
               HARIOM
             </div>
-            <div className="hidden md:block text-xs text-gold font-secondary">
+            <div className={`hidden md:block text-xs ${goldAccent} font-secondary transition-colors duration-500`}>
               Since 1995
             </div>
           </Link>
@@ -42,37 +48,37 @@ const Header = () => {
           <nav className="hidden lg:flex items-center space-x-8">
             <Link
               to="/shop"
-              className="text-wood hover:text-clay transition-colors duration-200 font-secondary"
+              className={`${textColor} ${hoverColor} transition-colors duration-300 font-secondary`}
             >
               Shop
             </Link>
             <Link
               to="/categories/signature"
-              className="text-wood hover:text-clay transition-colors duration-200 font-secondary"
+              className={`${textColor} ${hoverColor} transition-colors duration-300 font-secondary`}
             >
               Signature Sweets
             </Link>
             <Link
               to="/categories/traditional"
-              className="text-wood hover:text-clay transition-colors duration-200 font-secondary"
+              className={`${textColor} ${hoverColor} transition-colors duration-300 font-secondary`}
             >
               Traditional
             </Link>
             <Link
               to="/categories/dryfruit"
-              className="text-wood hover:text-clay transition-colors duration-200 font-secondary"
+              className={`${textColor} ${hoverColor} transition-colors duration-300 font-secondary`}
             >
               Dry Fruits
             </Link>
             <Link
               to="/gifting"
-              className="text-wood hover:text-clay transition-colors duration-200 font-secondary"
+              className={`${textColor} ${hoverColor} transition-colors duration-300 font-secondary`}
             >
               Gifting
             </Link>
             <Link
               to="/about"
-              className="text-wood hover:text-clay transition-colors duration-200 font-secondary"
+              className={`${textColor} ${hoverColor} transition-colors duration-300 font-secondary`}
             >
               Our Story
             </Link>
@@ -81,20 +87,20 @@ const Header = () => {
           {/* Icons */}
           <div className="flex items-center space-x-4">
             <button
-              className="text-wood hover:text-clay transition-colors duration-200"
+              className={`${textColor} ${hoverColor} transition-colors duration-300`}
               aria-label="Search"
             >
               <Search className="w-5 h-5" />
             </button>
             <button
-              className="text-wood hover:text-clay transition-colors duration-200"
+              className={`${textColor} ${hoverColor} transition-colors duration-300`}
               aria-label="Account"
             >
               <User className="w-5 h-5" />
             </button>
             <button
               onClick={() => setIsCartOpen(true)}
-              className="relative text-wood hover:text-clay transition-colors duration-200"
+              className={`relative ${textColor} ${hoverColor} transition-colors duration-300`}
               aria-label="Cart"
             >
               <ShoppingCart className="w-5 h-5" />
@@ -107,7 +113,7 @@ const Header = () => {
 
             {/* Mobile Menu Button */}
             <button
-              className="lg:hidden text-wood hover:text-clay transition-colors duration-200"
+              className={`lg:hidden ${textColor} ${hoverColor} transition-colors duration-300`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Menu"
             >
