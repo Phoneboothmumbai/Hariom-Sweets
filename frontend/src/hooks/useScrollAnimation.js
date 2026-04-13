@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
+import { useScroll, useTransform, useSpring } from 'framer-motion';
 
 export const useScrollAnimation = () => {
   const [scrollY, setScrollY] = useState(0);
@@ -15,14 +16,31 @@ export const useScrollAnimation = () => {
   return scrollY;
 };
 
+// Bidirectional scroll hook
+export const useBidirectionalScroll = () => {
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start end", "end start"]
+  });
+
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+
+  return { ref, scrollYProgress: smoothProgress };
+};
+
 // Stagger animation variants
 export const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
     transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2,
+      staggerChildren: 0.12,
+      delayChildren: 0.1,
     },
   },
 };
@@ -30,7 +48,7 @@ export const containerVariants = {
 export const itemVariants = {
   hidden: { 
     opacity: 0, 
-    y: 30,
+    y: 40,
     scale: 0.95
   },
   visible: {
@@ -41,15 +59,16 @@ export const itemVariants = {
       type: 'spring',
       stiffness: 100,
       damping: 15,
+      duration: 0.6
     },
   },
 };
 
-// Fade slide variants
+// Fade slide variants with bidirectional support
 export const fadeSlideUp = {
   hidden: { 
     opacity: 0, 
-    y: 50 
+    y: 60 
   },
   visible: {
     opacity: 1,
@@ -66,7 +85,7 @@ export const fadeSlideUp = {
 export const fadeSlideLeft = {
   hidden: { 
     opacity: 0, 
-    x: -60 
+    x: -70 
   },
   visible: {
     opacity: 1,
@@ -83,7 +102,7 @@ export const fadeSlideLeft = {
 export const fadeSlideRight = {
   hidden: { 
     opacity: 0, 
-    x: 60 
+    x: 70 
   },
   visible: {
     opacity: 1,
@@ -101,7 +120,7 @@ export const fadeSlideRight = {
 export const scaleFade = {
   hidden: { 
     opacity: 0, 
-    scale: 0.8 
+    scale: 0.85 
   },
   visible: {
     opacity: 1,

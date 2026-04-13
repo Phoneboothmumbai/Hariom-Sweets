@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import { ArrowRight, Star, Award, TrendingUp } from 'lucide-react';
 import { products, categories } from '../data/mockData';
 import { useCart } from '../context/CartContext';
@@ -18,113 +18,146 @@ const Home = () => {
   const navigate = useNavigate();
   const popularProducts = products.slice(0, 4);
   
-  const { scrollYProgress } = useScroll();
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-  const heroScale = useTransform(scrollYProgress, [0, 0.3], [1, 0.95]);
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"]
+  });
+  
+  // Smooth spring animation for scroll progress
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 30,
+    restDelta: 0.001
+  });
+  
+  // Bidirectional animations
+  const bannerY = useTransform(smoothProgress, [0, 1], ["0%", "30%"]);
+  const bannerOpacity = useTransform(smoothProgress, [0, 0.5, 1], [1, 0.6, 0]);
+  const bannerScale = useTransform(smoothProgress, [0, 1], [1, 1.1]);
+  const textY = useTransform(smoothProgress, [0, 1], ["0%", "50%"]);
+  const textOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#fdf7e1] via-[#f6e8e6] to-[#a3caca]">
+    <div className="min-h-screen" ref={ref}>
+      {/* Hero Banner Section with Image */}
+      <section className="relative h-screen flex items-center justify-center overflow-hidden">
+        {/* Banner Image with Parallax */}
         <motion.div 
-          className="absolute inset-0 opacity-10"
-          style={{ opacity: heroOpacity }}
-        >
-          <div className="absolute top-20 left-10 w-72 h-72 bg-clay rounded-full blur-3xl"></div>
-          <div className="absolute bottom-20 right-10 w-96 h-96 bg-gold rounded-full blur-3xl"></div>
-        </motion.div>
-        
-        <motion.div 
-          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
-          style={{ opacity: heroOpacity, scale: heroScale }}
+          className="absolute inset-0"
+          style={{ 
+            y: bannerY,
+            scale: bannerScale
+          }}
         >
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
+            className="absolute inset-0 bg-cover bg-center"
+            style={{ 
+              backgroundImage: "url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1920&q=80')",
+              opacity: bannerOpacity
+            }}
+          />
+          {/* Gradient Overlay */}
+          <div className="absolute inset-0 bg-gradient-to-r from-wood/90 via-wood/70 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-wood/50 via-transparent to-transparent"></div>
+        </motion.div>
+        
+        {/* Hero Text Content */}
+        <motion.div 
+          className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+          style={{ 
+            y: textY,
+            opacity: textOpacity
+          }}
+        >
+          <div className="max-w-3xl">
             <motion.p 
-              className="text-gold font-secondary text-lg mb-4 italic"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
+              className="text-gold font-secondary text-xl md:text-2xl mb-4 italic"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.3, duration: 0.8 }}
             >
               From Mumbai, With Love
             </motion.p>
             <motion.h1 
-              className="text-5xl md:text-7xl font-primary font-bold text-wood mb-6 leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
+              className="text-5xl md:text-7xl lg:text-8xl font-primary font-bold text-white mb-6 leading-tight"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.5, duration: 0.8 }}
             >
-              The <span className="text-clay italic">Original</span>
+              The <span className="text-gold italic">Original</span>
               <br />
               Taste Makers
             </motion.h1>
             <motion.p 
-              className="text-xl md:text-2xl font-secondary text-wood/80 mb-8 max-w-3xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              className="text-xl md:text-2xl font-secondary text-white/90 mb-8 max-w-2xl leading-relaxed"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.7, duration: 0.8 }}
             >
-              Experience timeless flavors crafted with <span className="text-clay font-semibold">love</span> and <span className="text-clay font-semibold">tradition</span> since 1995
+              Experience timeless flavors crafted with <span className="text-gold font-semibold">love</span> and <span className="text-gold font-semibold">tradition</span> since 1995
             </motion.p>
             <motion.div 
-              className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8, duration: 0.8 }}
+              className="flex flex-col sm:flex-row gap-4"
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.9, duration: 0.8 }}
             >
-              <Link
-                to="/shop"
-                className="bg-clay text-white px-8 py-4 rounded-md hover:bg-opacity-90 transition-all duration-300 font-secondary font-semibold flex items-center gap-2 shadow-lg hover:shadow-xl hover:scale-105"
-              >
-                Explore Our Collection
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-              <Link
-                to="/about"
-                className="border-2 border-wood text-wood px-8 py-4 rounded-md hover:bg-wood hover:text-white transition-all duration-300 font-secondary font-semibold hover:scale-105"
-              >
-                Our Story
-              </Link>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/shop"
+                  className="inline-flex items-center gap-2 bg-clay text-white px-8 py-4 rounded-md hover:bg-opacity-90 transition-all duration-300 font-secondary font-semibold shadow-2xl hover:shadow-xl"
+                >
+                  Explore Our Collection
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                <Link
+                  to="/about"
+                  className="inline-flex items-center border-2 border-white text-white px-8 py-4 rounded-md hover:bg-white hover:text-wood transition-all duration-300 font-secondary font-semibold"
+                >
+                  Our Story
+                </Link>
+              </motion.div>
             </motion.div>
-          </motion.div>
-
-          {/* Floating decorative elements */}
-          <motion.div
-            className="absolute top-1/4 left-10 hidden lg:block"
-            animate={{ 
-              y: [0, -20, 0],
-              rotate: [0, 5, 0]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
-          >
-            <Award className="w-16 h-16 text-gold opacity-30" />
-          </motion.div>
-          <motion.div
-            className="absolute bottom-1/4 right-10 hidden lg:block"
-            animate={{ 
-              y: [0, 20, 0],
-              rotate: [0, -5, 0]
-            }}
-            transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          >
-            <Star className="w-16 h-16 text-clay opacity-30" />
-          </motion.div>
+          </div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Decorative Elements */}
+        <motion.div
+          className="absolute top-1/4 right-10 hidden lg:block"
+          animate={{ 
+            y: [0, -20, 0],
+            rotate: [0, 5, 0]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+          style={{ opacity: textOpacity }}
+        >
+          <Award className="w-20 h-20 text-gold opacity-40" />
+        </motion.div>
+        <motion.div
+          className="absolute bottom-1/3 left-10 hidden lg:block"
+          animate={{ 
+            y: [0, 20, 0],
+            rotate: [0, -5, 0]
+          }}
+          transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 1 }}
+          style={{ opacity: textOpacity }}
+        >
+          <Star className="w-20 h-20 text-gold opacity-40" />
+        </motion.div>
+
+        {/* Scroll Indicator */}
         <motion.div
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          style={{ opacity: textOpacity }}
         >
-          <div className="w-6 h-10 border-2 border-wood rounded-full flex justify-center">
+          <div className="w-6 h-10 border-2 border-white rounded-full flex justify-center">
             <motion.div 
-              className="w-1 h-3 bg-wood rounded-full mt-2"
+              className="w-1 h-3 bg-white rounded-full mt-2"
               animate={{ y: [0, 10, 0] }}
               transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
             ></motion.div>
