@@ -53,13 +53,13 @@ const Home = () => {
           <motion.div
             className="absolute inset-0 bg-cover bg-center"
             style={{ 
-              backgroundImage: "url('https://images.unsplash.com/photo-1606491956689-2ea866880c84?w=1920&q=80')",
+              backgroundImage: "url('https://images.unsplash.com/photo-1758910536889-43ce7b3199fd?w=1920&q=85')",
               opacity: bannerOpacity
             }}
           />
-          {/* Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-r from-wood/90 via-wood/70 to-transparent"></div>
-          <div className="absolute inset-0 bg-gradient-to-t from-wood/50 via-transparent to-transparent"></div>
+          {/* Gradient Overlay for text readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-wood/95 via-wood/75 to-wood/40"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-wood/60 via-transparent to-transparent"></div>
         </motion.div>
         
         {/* Hero Text Content */}
