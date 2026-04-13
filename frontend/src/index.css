@@ -73,9 +73,13 @@ code {
   }
 }
 
-/* Smooth scrolling */
+/* Smooth scrolling with premium feel */
 html {
   scroll-behavior: smooth;
+}
+
+* {
+  scroll-padding-top: 100px;
 }
 
 /* Custom scrollbar */
